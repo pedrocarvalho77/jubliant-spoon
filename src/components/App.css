@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
+
+.top-pane {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+.bottom-pane {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 300px;
+    justify-content: space-between;
+}
+.bottom-box{
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    margin: 2em;
+    background-color: #1e1e1e;
+    font-family: 'Ubuntu Mono', monospace;
+    color: white;
+    border-radius: 3px;
+}
+.result-content-2cols{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.result-content-1cols{
+    display: flex;
+    flex-direction: column;
+}
+
+.left-top-pane{
+    display: grid;
+    width: 150px;
+    gap: 10px;
+    margin: 2em 2em auto 2em;
+}
+.buttons{
+    display: flex;
+    flex-direction: row; 
+}
+.center-top-pane{
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+}
+.reviewpad-editor{
+    width: 1000px;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+.right-top-pane{
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 2em;
+    gap:10px;
+}
