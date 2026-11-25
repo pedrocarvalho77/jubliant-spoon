@@ -121,7 +121,7 @@ export default function Runner(props: RunnerProps) {
       size="large"
       disabled={loading}
       onClick={handleOnClick}
-      startIcon={loading ? <CircularProgress size={18} color="inherit"/> : <PlayArrowIcon/>}
+      startIcon={loading ? <CircularProgress size={18} color="inherit" sx={{ "@media (prefers-reduced-motion: reduce)": { animationDuration: "8s", "& .MuiCircularProgress-circle": { animationDuration: "8s" } } }}/> : <PlayArrowIcon/>}
     >
       Run
     </Button>
