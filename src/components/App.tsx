@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Alert from '@mui/material/Alert';
@@ -56,6 +56,16 @@ export default function App() {
   const [runnerResult, setRunnerResult] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [runnerCounter, setRunnerCounter] = useState(0);
+  const [running, setRunning] = useState(false);
+  const runRef = useRef<(() => void) | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  // The results sit below the editor, so bring them into view after a run
+  useEffect(() => {
+    if (runnerCounter === 0) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    resultsRef.current?.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+  }, [runnerCounter]);
 
   const theme = useMemo(() => createTheme({
     palette: {
@@ -67,10 +77,19 @@ export default function App() {
     },
     shape: { borderRadius: 10 },
     components: {
-      // shortcut: read once per theme change, not live; reload after changing the OS setting
-      ...(window.matchMedia('(prefers-reduced-motion: reduce)').matches && {
-        MuiButtonBase: { defaultProps: { disableRipple: true } },
-      }),
+      MuiButtonBase: {
+        // shortcut: read once per theme change, not live; reload after changing the OS setting
+        defaultProps: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? { disableRipple: true } : {},
+        // Focus must not depend on the ripple, which is off under reduced motion
+        styleOverrides: {
+          root: {
+            '&.Mui-focusVisible': {
+              outline: `2px solid ${mode === 'dark' ? '#818cf8' : '#4f46e5'}`,
+              outlineOffset: 2,
+            },
+          },
+        },
+      },
       MuiOutlinedInput: {
         styleOverrides: {
           notchedOutline: { borderColor: mode === 'dark' ? '#8b90a0' : '#6b7080' },
@@ -104,7 +123,7 @@ export default function App() {
         <header className="app-header">
           <div>
             <Typography variant="h5" variantMapping={{ h5: "h1" }} sx={{ fontWeight: 600 }}>Config Syntax Validator & Evaluator</Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
               Edit a configuration and dry-run it against a pull request.
             </Typography>
           </div>
@@ -138,6 +157,7 @@ export default function App() {
               readOnly={false}
               minimapEnabled={false}
               getValueCallback={setInputCode}
+              onRun={() => runRef.current?.()}
               customValue={codeContent}
             />
           </Paper>
@@ -150,11 +170,21 @@ export default function App() {
               getRunnerErrosCallback={setError}
               currentCounter={runnerCounter}
               getRunnerCounterCallback={setRunnerCounter}
+              running={running}
+              setRunning={setRunning}
+              runRef={runRef}
             />
           </Paper>
         </div>
 
-        <Paper variant="outlined" className="panel" aria-live="polite">
+        <Paper
+          ref={resultsRef}
+          variant="outlined"
+          className="panel"
+          aria-live="polite"
+          aria-busy={running}
+          sx={{ opacity: running ? 0.5 : 1, transition: 'opacity 150ms' }}
+        >
           <Display counter={runnerCounter} runnerResult={runnerResult} error={error} />
         </Paper>
         </main>
