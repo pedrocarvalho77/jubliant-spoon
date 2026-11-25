@@ -12,9 +12,10 @@ const ROWS_PER_COLUMN = 9;
 
 export default function Display({ counter, runnerResult, error }: DisplayProps) {
   if (counter === 0) {
-    return <Typography className="result-empty">Run the configuration to see results here.</Typography>;
+    return <Typography sx={{ color: "text.secondary" }}>Run the configuration to see results here.</Typography>;
   }
-  if (error) return <Alert severity="error">{error}</Alert>;
+  // shortcut: keyed on the API's wording; the API reports "valid but nothing to run on" as a 400
+  if (error) return <Alert severity={error.startsWith("Configuration is valid") ? "success" : "error"}>{error}</Alert>;
   if (runnerResult.length === 0) return <Alert severity="info">The runner returned no statements.</Alert>;
 
   const columns = Math.ceil(runnerResult.length / ROWS_PER_COLUMN);
