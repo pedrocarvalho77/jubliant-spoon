@@ -89,7 +89,7 @@ export default function Runner(props: RunnerProps) {
       // Statements is undefined when the runner has nothing to report
       const statements: { Code: unknown }[] = body.Statements ?? [];
       getRunnerErrosCallback("");
-      getRunnerResultCallback(statements.map(s => JSON.stringify(s.Code)));
+      getRunnerResultCallback(statements.map(s => typeof s.Code === 'string' ? s.Code : JSON.stringify(s.Code)));
     } catch (error) {
       getRunnerResultCallback([]);
       getRunnerErrosCallback(`Could not reach the runner at ${RUNNER_URL}. Is the API running?`);
