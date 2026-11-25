@@ -1,6 +1,6 @@
-// Demo mode (REACT_APP_DEMO=true): the runner is simulated in the browser,
+// Demo mode (VITE_DEMO=true): the runner is simulated in the browser,
 // so the app works without a backend, e.g. on GitHub Pages.
-export const DEMO = process.env.REACT_APP_DEMO === 'true';
+export const DEMO = import.meta.env.VITE_DEMO === 'true';
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
