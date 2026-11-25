@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Alert from '@mui/material/Alert';
@@ -18,18 +18,39 @@ import { DEMO } from '../demo';
 import './App.css';
 
 type Mode = 'light' | 'dark';
-const MODE_KEY = 'theme-mode';
+const MODE_KEY = 'color-scheme';
+const DARK_QUERY = '(prefers-color-scheme: dark)';
 
-function initialMode(): Mode {
+function storedOverride(): Mode | null {
   try {
     const saved = localStorage.getItem(MODE_KEY);
     if (saved === 'light' || saved === 'dark') return saved;
   } catch { /* storage unavailable */ }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return null;
 }
 
 export default function App() {
-  const [mode, setMode] = useState<Mode>(initialMode);
+  // No override means "follow the system", including when it changes.
+  const [override, setOverride] = useState<Mode | null>(storedOverride);
+  const [systemDark, setSystemDark] = useState(() => window.matchMedia(DARK_QUERY).matches);
+  const mode: Mode = override ?? (systemDark ? 'dark' : 'light');
+
+  useEffect(() => {
+    const query = window.matchMedia(DARK_QUERY);
+    const onSystem = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+    const onStorage = (e: StorageEvent) => { if (e.key === MODE_KEY) setOverride(storedOverride()); };
+    query.addEventListener('change', onSystem);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      query.removeEventListener('change', onSystem);
+      window.removeEventListener('storage', onStorage);
+    };
+  }, []);
+
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) meta.setAttribute('content', override ?? 'light dark');
+  }, [override]);
   const [inputCode,setInputCode] = useState("");
   const [codeContent,setCodeContent] = useState("");
   const [runnerResult, setRunnerResult] = useState<string[]>([]);
@@ -52,9 +73,15 @@ export default function App() {
   }), [mode]);
 
   const toggleMode = () => {
-    const next: Mode = mode === 'dark' ? 'light' : 'dark';
-    setMode(next);
-    try { localStorage.setItem(MODE_KEY, next); } catch { /* storage unavailable */ }
+    // Pick the opposite of what is shown. If that equals the system preference the
+    // override is dropped, so the page keeps following the system.
+    const target: Mode = mode === 'dark' ? 'light' : 'dark';
+    const next = target === (systemDark ? 'dark' : 'light') ? null : target;
+    setOverride(next);
+    try {
+      if (next) localStorage.setItem(MODE_KEY, next);
+      else localStorage.removeItem(MODE_KEY);
+    } catch { /* storage unavailable */ }
   };
 
   const loadCode = (code: string) => { setCodeContent(code); setInputCode(code); };
@@ -71,7 +98,7 @@ export default function App() {
             </Typography>
           </div>
           <Tooltip title={mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}>
-            <IconButton onClick={toggleMode} aria-label="toggle theme">
+            <IconButton onClick={toggleMode} aria-label={mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}>
               {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
           </Tooltip>

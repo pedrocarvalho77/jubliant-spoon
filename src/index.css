@@ -3,3 +3,13 @@
 body {
     margin: 0;
 }
+
+:root {
+    color-scheme: light dark;
+}
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+}
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+}

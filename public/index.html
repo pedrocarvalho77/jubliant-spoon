@@ -4,6 +4,13 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Apply a stored override before first paint to avoid a flash of the wrong scheme.
+      try {
+        document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem('color-scheme') ?? 'light dark';
+      } catch (e) {}
+    </script>
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Edit a configuration and run it to check for errors"
     />
