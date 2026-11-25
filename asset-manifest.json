@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/jubliant-spoon/static/css/main.1811940c.css",
-    "main.js": "/jubliant-spoon/static/js/main.7688356c.js",
+    "main.css": "/jubliant-spoon/static/css/main.6debb09e.css",
+    "main.js": "/jubliant-spoon/static/js/main.860a3bbb.js",
     "index.html": "/jubliant-spoon/index.html",
-    "main.1811940c.css.map": "/jubliant-spoon/static/css/main.1811940c.css.map",
-    "main.7688356c.js.map": "/jubliant-spoon/static/js/main.7688356c.js.map"
+    "main.6debb09e.css.map": "/jubliant-spoon/static/css/main.6debb09e.css.map",
+    "main.860a3bbb.js.map": "/jubliant-spoon/static/js/main.860a3bbb.js.map"
   },
   "entrypoints": [
-    "static/css/main.1811940c.css",
-    "static/js/main.7688356c.js"
+    "static/css/main.6debb09e.css",
+    "static/js/main.860a3bbb.js"
   ]
 }
