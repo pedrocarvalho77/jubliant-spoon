@@ -77,7 +77,7 @@ export default function Runner(props: RunnerProps) {
   }
   return(
     <div className={className}>
-    <FormControl variant="outlined" fullWidth required>
+    <FormControl variant="outlined" fullWidth>
       <InputLabel htmlFor="outlined-url">Pull Request URL</InputLabel>
       <OutlinedInput
         id="outlined-url"
@@ -88,11 +88,13 @@ export default function Runner(props: RunnerProps) {
         placeholder="https://github.com/google/guava/pull/6059"
       />
     </FormControl>
-    <FormControl variant="outlined" fullWidth required>
+    <FormControl variant="outlined" fullWidth>
       <InputLabel htmlFor="outlined-adornment-token">GitHub token</InputLabel>
         <OutlinedInput
           id="outlined-adornment-token"
           type={showToken ? 'text' : 'password'}
+          autoComplete="off"
+          inputProps={{ 'aria-describedby': 'token-help' }}
           value={token}
           onChange={(event) => setToken(event.target.value)}
           endAdornment={
@@ -109,7 +111,7 @@ export default function Runner(props: RunnerProps) {
           }
           label="GitHub token"
        />
-        <FormHelperText>Only sent to the runner you configured.</FormHelperText>
+        <FormHelperText id="token-help">Only sent to the runner you configured.</FormHelperText>
       </FormControl>
     <Button
       fullWidth

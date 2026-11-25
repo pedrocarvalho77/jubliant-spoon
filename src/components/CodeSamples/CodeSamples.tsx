@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Button } from "@mui/material";
 
 interface CodeSamplesProps {
   className?: string,
@@ -26,10 +26,10 @@ export default function CodeSamples({ className, getCodeFromFileCallback }: Code
   }
 
   return (
-    <>
+    <div className={className} role="group" aria-label="Samples" style={{ display: "contents" }}>
       {SAMPLES.map(({ file, label }) => (
-        <Chip key={file} className={className} label={label} variant="outlined" onClick={() => fetchCode(file)} />
+        <Button key={file} size="small" variant="outlined" onClick={() => fetchCode(file)}>{label}</Button>
       ))}
-    </>
+    </div>
   );
 }

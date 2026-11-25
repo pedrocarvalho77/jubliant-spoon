@@ -66,6 +66,13 @@ export default function App() {
         : { default: '#f4f5f9', paper: '#ffffff' },
     },
     shape: { borderRadius: 10 },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          notchedOutline: { borderColor: mode === 'dark' ? '#8b90a0' : '#6b7080' },
+        },
+      },
+    },
     typography: {
       fontFamily: 'Inter, system-ui, sans-serif',
       button: { textTransform: 'none', fontWeight: 600 },
@@ -92,7 +99,7 @@ export default function App() {
       <div className="app" style={{ ['--border' as string]: theme.palette.divider }}>
         <header className="app-header">
           <div>
-            <Typography variant="h5" fontWeight={600}>Config Syntax Validator & Evaluator</Typography>
+            <Typography variant="h5" component="h1" fontWeight={600}>Config Syntax Validator & Evaluator</Typography>
             <Typography variant="body2" color="text.secondary">
               Edit a configuration and dry-run it against a pull request.
             </Typography>
@@ -104,6 +111,7 @@ export default function App() {
           </Tooltip>
         </header>
 
+        <main className="main">
         {DEMO && (
           <Alert severity="info">
             Demo mode: no backend is connected. Run returns the actions found in your configuration
@@ -142,9 +150,10 @@ export default function App() {
           </Paper>
         </div>
 
-        <Paper variant="outlined" className="panel">
+        <Paper variant="outlined" className="panel" aria-live="polite">
           <Display counter={runnerCounter} runnerResult={runnerResult} error={error} />
         </Paper>
+        </main>
       </div>
     </ThemeProvider>
   );

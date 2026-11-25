@@ -1,4 +1,4 @@
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useRef } from "react";
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -18,6 +18,8 @@ export default function ImportButton(props: ImportButtonProps) {
       getTextFromFileCallback,
     } = props
 
+    const inputRef = useRef<HTMLInputElement>(null);
+
     const onChange = (e : SyntheticEvent ) => {
       const input = e.target as HTMLInputElement;
       const file = input.files?.[0];
@@ -27,11 +29,11 @@ export default function ImportButton(props: ImportButtonProps) {
     }
 
     return (
-      <label>
-        <Input accept=".yml,.yaml" id="contained-button-file" type="file" onChange={onChange}/>
-        <Button className="upload-button" size="small" variant="outlined" component="span" startIcon={<UploadFileIcon/>}>
+      <>
+        <Input ref={inputRef} accept=".yml,.yaml" type="file" tabIndex={-1} aria-hidden="true" onChange={onChange}/>
+        <Button className="upload-button" size="small" variant="outlined" startIcon={<UploadFileIcon/>} onClick={() => inputRef.current?.click()}>
           Upload
         </Button>
-      </label>
-    ) 
+      </>
+    )
 }
