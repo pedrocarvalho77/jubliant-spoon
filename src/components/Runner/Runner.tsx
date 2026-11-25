@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
+import { DEMO, demoFetch } from '../../demo';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 // Override with REACT_APP_RUNNER_URL when the runner is not on localhost
@@ -49,7 +50,7 @@ export default function Runner(props: RunnerProps) {
   }
   async function fetchRunner(){
     try {
-      const response = await fetch(RUNNER_URL, {
+      const response = await (DEMO ? demoFetch : fetch)(RUNNER_URL, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify({

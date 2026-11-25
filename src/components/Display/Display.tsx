@@ -20,7 +20,7 @@ export default function Display({ counter, runnerResult, error }: DisplayProps) 
   const columns = Math.ceil(runnerResult.length / ROWS_PER_COLUMN);
   return (
     <>
-      <Chip color="success" size="small" label={`${runnerResult.length} statements`} sx={{ mb: 1.5 }} />
+      <Chip color="success" size="small" label={`${runnerResult.length} ${runnerResult.length === 1 ? "statement" : "statements"}`} sx={{ mb: 1.5 }} />
       <div className="result-content" style={{ columnCount: columns }}>
         {runnerResult.map((item, index) => <p key={index}>{item}</p>)}
       </div>

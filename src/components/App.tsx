@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Alert from '@mui/material/Alert';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +14,7 @@ import SaveButton from './SaveButton/SaveButton';
 import CodeSamples from './CodeSamples/CodeSamples';
 import Runner from './Runner/Runner';
 import Display from './Display/Display';
+import { DEMO } from '../demo';
 import './App.css';
 
 type Mode = 'light' | 'dark';
@@ -74,6 +76,13 @@ export default function App() {
             </IconButton>
           </Tooltip>
         </header>
+
+        {DEMO && (
+          <Alert severity="info">
+            Demo mode: no backend is connected. Run returns the actions found in your configuration
+            as simulated results. Run the API locally for real evaluation.
+          </Alert>
+        )}
 
         <div className="workspace">
           <Paper variant="outlined" className="panel">
