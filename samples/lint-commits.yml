@@ -1,0 +1,18 @@
+api-version: reviewpad.com/v1.x
+
+mode: verbose
+
+rules:
+  always:
+    kind: patch
+    description: Always true
+    spec: 1 == 1
+
+workflows:
+  - name: lint-commits
+    description: Check commit messages and the title
+    if:
+      - rule: always
+        extra-actions:
+          - $commitLint()
+          - $titleLint()

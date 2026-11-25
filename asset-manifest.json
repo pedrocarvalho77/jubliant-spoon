@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/jubliant-spoon/static/css/main.2fcc2e54.css",
+    "main.js": "/jubliant-spoon/static/js/main.cf97c0c5.js",
+    "index.html": "/jubliant-spoon/index.html",
+    "main.2fcc2e54.css.map": "/jubliant-spoon/static/css/main.2fcc2e54.css.map",
+    "main.cf97c0c5.js.map": "/jubliant-spoon/static/js/main.cf97c0c5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2fcc2e54.css",
+    "static/js/main.cf97c0c5.js"
+  ]
+}

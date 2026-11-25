@@ -1,0 +1,31 @@
+api-version: reviewpad.com/v1.x
+
+mode: verbose
+
+rules:
+  is-small:
+    kind: patch
+    description: Small pull request
+    spec: $size() <= 30
+  is-medium:
+    kind: patch
+    description: Medium pull request
+    spec: $size() > 30 && $size() <= 100
+  is-large:
+    kind: patch
+    description: Large pull request
+    spec: $size() > 100
+
+workflows:
+  - name: label-with-size
+    description: Add a label with the pull request size
+    if:
+      - rule: is-small
+        extra-actions:
+          - $addLabel("small")
+      - rule: is-medium
+        extra-actions:
+          - $addLabel("medium")
+      - rule: is-large
+        extra-actions:
+          - $addLabel("large")
