@@ -1,0 +1,17 @@
+api-version: reviewpad.com/v1.x
+
+mode: verbose
+
+rules:
+  has-no-assignees:
+    kind: patch
+    description: Nobody is assigned
+    spec: $assignees() == []
+
+workflows:
+  - name: assign-author
+    description: Assign the pull request to its author
+    if:
+      - rule: has-no-assignees
+        extra-actions:
+          - $assignAssignees([$author()])
