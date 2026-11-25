@@ -49,6 +49,10 @@
 .result-content p {
     margin: 0 0 6px;
     break-inside: avoid;
+    overflow-wrap: anywhere;
+}
+.app-header h1 {
+    text-wrap: balance;
 }
 .result-empty {
     opacity: 0.6;

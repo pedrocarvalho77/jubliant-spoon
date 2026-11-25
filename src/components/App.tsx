@@ -67,6 +67,10 @@ export default function App() {
     },
     shape: { borderRadius: 10 },
     components: {
+      // shortcut: read once per theme change, not live; reload after changing the OS setting
+      ...(window.matchMedia('(prefers-reduced-motion: reduce)').matches && {
+        MuiButtonBase: { defaultProps: { disableRipple: true } },
+      }),
       MuiOutlinedInput: {
         styleOverrides: {
           notchedOutline: { borderColor: mode === 'dark' ? '#8b90a0' : '#6b7080' },
