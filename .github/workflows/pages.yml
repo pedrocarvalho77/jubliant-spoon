@@ -26,12 +26,11 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          CI: false
-          REACT_APP_DEMO: "true"
-          PUBLIC_URL: /${{ github.event.repository.name }}
+          VITE_DEMO: "true"
+          BASE_PATH: /${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: dist
 
   deploy:
     needs: build

@@ -103,7 +103,7 @@ export default function App() {
       <div className="app" style={{ ['--border' as string]: theme.palette.divider }}>
         <header className="app-header">
           <div>
-            <Typography variant="h5" component="h1" fontWeight={600}>Config Syntax Validator & Evaluator</Typography>
+            <Typography variant="h5" variantMapping={{ h5: "h1" }} sx={{ fontWeight: 600 }}>Config Syntax Validator & Evaluator</Typography>
             <Typography variant="body2" color="text.secondary">
               Edit a configuration and dry-run it against a pull request.
             </Typography>

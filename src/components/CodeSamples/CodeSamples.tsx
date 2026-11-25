@@ -17,7 +17,7 @@ const SAMPLES = [
 export default function CodeSamples({ className, getCodeFromFileCallback }: CodeSamplesProps) {
   async function fetchCode(file: string) {
     try {
-      const response = await fetch(`${process.env.PUBLIC_URL}/samples/${file}.yml`);
+      const response = await fetch(`${import.meta.env.BASE_URL}samples/${file}.yml`);
       if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
       getCodeFromFileCallback(await response.text());
     } catch (error) {

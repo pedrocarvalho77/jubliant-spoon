@@ -11,8 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import { DEMO, demoFetch } from '../../demo';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-// Override with REACT_APP_RUNNER_URL when the runner is not on localhost
-const RUNNER_URL = process.env.REACT_APP_RUNNER_URL ?? "http://localhost:8080/dry-run";
+// Override with VITE_RUNNER_URL when the runner is not on localhost
+const RUNNER_URL = import.meta.env.VITE_RUNNER_URL ?? "http://localhost:8080/dry-run";
 
 interface RunnerProps{
   className: string,
