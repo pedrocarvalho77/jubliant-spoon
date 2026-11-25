@@ -1,0 +1,17 @@
+api-version: reviewpad.com/v1.x
+
+mode: verbose
+
+rules:
+  has-empty-description:
+    kind: patch
+    description: The description is empty
+    spec: $description() == ""
+
+workflows:
+  - name: empty-description
+    description: Warn when the description is empty
+    if:
+      - rule: has-empty-description
+        extra-actions:
+          - $warn("The description is empty. Please add more information!")

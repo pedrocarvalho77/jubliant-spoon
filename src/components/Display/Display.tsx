@@ -1,64 +1,29 @@
-import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 
-interface DisplayProps{
-    counter: number,
-    runnerResult: string[],
-    error: string
+interface DisplayProps {
+  counter: number,
+  runnerResult: string[],
+  error: string
+}
+
+const ROWS_PER_COLUMN = 9;
+
+export default function Display({ counter, runnerResult, error }: DisplayProps) {
+  if (counter === 0) {
+    return <Typography className="result-empty">Run the configuration to see results here.</Typography>;
   }
+  if (error) return <Alert severity="error">{error}</Alert>;
+  if (runnerResult.length === 0) return <Alert severity="info">The runner returned no statements.</Alert>;
 
-export default function Display(props: DisplayProps){
-
-    const {
-        counter,
-        runnerResult,
-        error
-      } = props
-    
-    function displayResult(){
-      var arrayTest = [];
-      if (runnerResult.length > 9){
-        for (var i = 0; i < runnerResult.length ; i++) {
-          if(i <= 8){
-            arrayTest[0] = runnerResult.map( (item, index) => {
-              if(index < 9){
-                return <p> {counter + ": "}{item} </p>
-              }
-              index = index + 1;
-            });
-          }
-          else {
-            arrayTest[1] = runnerResult.map( (item, index) => {
-              if(index >= 9){
-                return <p> {counter + ": "}{item} </p>
-              }
-              index = index + 1;
-            });
-          }
-        }
-        return ( 
-          <div className='result-content-2cols'>
-            <div className='left-side'>
-              {arrayTest[0]}
-            </div>
-            <div className='right-side'>
-              {arrayTest[1]}
-            </div>
-        </div> 
-        )
-      } else {
-        return <div className='result-content-1col'> {runnerResult.map( item => <p> {counter+": "}{item} </p>)} </div>
-      }
-    }
-
-    function displayError(){
-      return <p>{counter+": "}{error}</p>
-    }
-    return(
-      <Box className="bottom-box" component="span">
-        {runnerResult.length != 0
-          ? displayResult()
-          : displayError()
-        }
-      </Box> 
-    )
+  const columns = Math.ceil(runnerResult.length / ROWS_PER_COLUMN);
+  return (
+    <>
+      <Chip color="success" size="small" label={`${runnerResult.length} statements`} sx={{ mb: 1.5 }} />
+      <div className="result-content" style={{ columnCount: columns }}>
+        {runnerResult.map((item, index) => <p key={index}>{item}</p>)}
+      </div>
+    </>
+  );
 }

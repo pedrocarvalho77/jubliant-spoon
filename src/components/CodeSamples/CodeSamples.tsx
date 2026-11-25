@@ -1,72 +1,35 @@
-import { Button, ButtonGroup } from "@mui/material";
+import { Chip } from "@mui/material";
 
-interface CodeSamplesProps{
-  className:string,
-  getCodeFromFileCallback: (value:any) => void
+interface CodeSamplesProps {
+  className?: string,
+  getCodeFromFileCallback: (value: string) => void
 }
 
-export default function CodeSamples(props: CodeSamplesProps) {
-    
-    const {
-        className,
-        getCodeFromFileCallback,
-    } = props
+// YAMLs live in public/samples
+const SAMPLES = [
+  { file: "pr-size-labelling", label: "PR size labelling" },
+  { file: "hello-world", label: "Hello world" },
+  { file: "lint-commits", label: "Lint commits" },
+  { file: "empty-description", label: "Empty description" },
+  { file: "assign-author", label: "Assign author" },
+];
 
-    const map = new Map();
-    map.set("pr-size-labelling","https://raw.githubusercontent.com/reviewpad/catalog/main/pr-size-labelling.yml")
-    map.set("file-path-labelling","https://raw.githubusercontent.com/reviewpad/catalog/main/file-path-labelling.yml")
-    map.set("assign-review-to-3-developers","https://raw.githubusercontent.com/reviewpad/catalog/main/assign-review-to-3-developers.yml")
-    map.set("label-file-pattern","https://raw.githubusercontent.com/reviewpad/catalog/main/label-file-pattern.yml")
-    map.set("hello-world","https://raw.githubusercontent.com/reviewpad/catalog/main/hello-world.yml")
-
-    const handleOnClick = (fileName : string) => fetchCode(fileName);
-    
-    async function fetchCode(fileName : string){
-      try{
-        let response = await fetch(map.get(fileName));
-        const test = await response.text();
-        getCodeFromFileCallback(test);
-      } catch(error){
-        console.log(error);
-      }
+export default function CodeSamples({ className, getCodeFromFileCallback }: CodeSamplesProps) {
+  async function fetchCode(file: string) {
+    try {
+      const response = await fetch(`${process.env.PUBLIC_URL}/samples/${file}.yml`);
+      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+      getCodeFromFileCallback(await response.text());
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    return (
-    <ButtonGroup
-      className={className}
-      variant="contained"
-      aria-label="vertical contained button group"
-      orientation="vertical"
-      size="small"
-    >
-      <Button
-       onClick={() => handleOnClick("pr-size-labelling")}
-      >
-        PR size labelling
-      </Button>
-      
-      <Button
-        onClick={() => handleOnClick("file-path-labelling")}
-      >
-        File path labelling
-      </Button>
-      
-      <Button
-        onClick={() => handleOnClick("assign-review-to-3-developers")}
-      >
-        Assign review to 3  developers
-      </Button>
-        
-      <Button
-        onClick={() => handleOnClick("label-file-pattern")}
-      >
-        Label file pattern
-      </Button>
-        <Button
-          onClick={() => handleOnClick("hello-world")}
-        >
-        Hello world
-        </Button>
-    </ButtonGroup>
-  )
+  return (
+    <>
+      {SAMPLES.map(({ file, label }) => (
+        <Chip key={file} className={className} label={label} variant="outlined" onClick={() => fetchCode(file)} />
+      ))}
+    </>
+  );
 }

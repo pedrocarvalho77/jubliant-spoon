@@ -10,7 +10,7 @@ interface EditorProps{
   customValue?: string
 }
 
-export default function ReviewpadEditor(props: EditorProps) {
+export default function ConfigEditor(props: EditorProps) {
   
   const {
     className,
@@ -25,7 +25,7 @@ export default function ReviewpadEditor(props: EditorProps) {
     return (
     <div className = {className}>
       <Editor
-          height="50vh"
+          height="60vh"
           defaultLanguage="yaml"
           defaultValue={defaultValue}
           theme={theme}

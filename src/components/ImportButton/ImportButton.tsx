@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 interface ImportButtonProps{
-  name: string,
+  name?: string,
   getTextFromFileCallback: (value:any) => void
 }
 
@@ -14,23 +14,22 @@ const Input = styled('input')({
 
 export default function ImportButton(props: ImportButtonProps) {
 
-    let fileReader: FileReader; 
     const {
-      name,
       getTextFromFileCallback,
     } = props
 
     const onChange = (e : SyntheticEvent ) => {
-      const file = (e.target as HTMLInputElement).files![0];
-      fileReader = new FileReader();
-      fileReader.readAsText(file);
-      fileReader.onloadend = () => { getTextFromFileCallback(fileReader.result) }
+      const input = e.target as HTMLInputElement;
+      const file = input.files?.[0];
+      if (!file) return;
+      file.text().then(getTextFromFileCallback);
+      input.value = ""; // allow re-importing the same file
     }
 
     return (
       <label>
-        <Input accept="yml/*" id="contained-button-file" multiple type="file" onChange={onChange}/>
-        <Button className="upload-button" size="small" variant="contained" component="span" startIcon={<UploadFileIcon/>}>
+        <Input accept=".yml,.yaml" id="contained-button-file" type="file" onChange={onChange}/>
+        <Button className="upload-button" size="small" variant="outlined" component="span" startIcon={<UploadFileIcon/>}>
           Upload
         </Button>
       </label>

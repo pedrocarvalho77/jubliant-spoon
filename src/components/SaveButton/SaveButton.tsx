@@ -15,14 +15,17 @@ export default function SaveButton(props: SaveButtonProps) {
     const downloadFile = () => {
         const element = document.createElement("a");
         const file = new Blob([textToDownload],{type:"text/plain"});
-        element.href = URL.createObjectURL(file);
-        element.download = "myrevy.yml";
+        const url = URL.createObjectURL(file);
+        element.href = url;
+        element.download = "config.yml";
         document.body.appendChild(element);
-        element.click()
+        element.click();
+        element.remove();
+        URL.revokeObjectURL(url);
     }
     
     return (
-    <Button className={className} size="small" variant="contained" component="span" startIcon={<SaveIcon/>} onClick={downloadFile}>
+    <Button className={className} size="small" variant="outlined" startIcon={<SaveIcon/>} onClick={downloadFile}>
         Save
     </Button>
   )
